@@ -46,7 +46,7 @@ public class BatchJobConfiguration {
     private StepBuilderFactory stepBuilderFactory;
 
     @Autowired
-    private ApplicationProperties applicationProperties;
+    private springbatch.patientbatchloader.config.ApplicationProperties applicationProperties;
 
     @Autowired
     @Qualifier(value="batchEntityManagerFactory")
@@ -62,7 +62,7 @@ public class BatchJobConfiguration {
     @Bean
     public Job job(Step step) throws Exception {
         return this.jobBuilderFactory
-            .get(Constants.JOB_NAME)
+            .get(springbatch.patientbatchloader.config.Constants.JOB_NAME)
             .validator(validator())
             .start(step)
             .build();
@@ -73,7 +73,7 @@ public class BatchJobConfiguration {
                      Function<PatientRecord, PatientEntity> processor,
                      JpaItemWriter<PatientEntity> writer) throws Exception {
         return this.stepBuilderFactory
-            .get(Constants.STEP_NAME)
+            .get(springbatch.patientbatchloader.config.Constants.STEP_NAME)
             .<PatientRecord, PatientEntity>chunk(2)
             .reader(itemReader)
             .processor(processor)
@@ -86,7 +86,7 @@ public class BatchJobConfiguration {
         return new JobParametersValidator() {
             @Override
             public void validate(JobParameters parameters) throws JobParametersInvalidException {
-                String fileName = parameters.getString(Constants.JOB_PARAM_FILE_NAME);
+                String fileName = parameters.getString(springbatch.patientbatchloader.config.Constants.JOB_PARAM_FILE_NAME);
                 if (StringUtils.isBlank(fileName)) {
                     throw new JobParametersInvalidException(
                         "The patient-batch-loader.fileName parameter is required.");
@@ -109,9 +109,9 @@ public class BatchJobConfiguration {
     @Bean
     @StepScope
     public FlatFileItemReader<PatientRecord> reader(
-        @Value("#{jobParameters['" + Constants.JOB_PARAM_FILE_NAME + "']}")String fileName) {
+        @Value("#{jobParameters['" + springbatch.patientbatchloader.config.Constants.JOB_PARAM_FILE_NAME + "']}")String fileName) {
         return new FlatFileItemReaderBuilder<PatientRecord>()
-            .name(Constants.ITEM_READER_NAME)
+            .name(springbatch.patientbatchloader.config.Constants.ITEM_READER_NAME)
             .resource(
                 new PathResource(
                     Paths.get(applicationProperties.getBatch().getInputPath() +

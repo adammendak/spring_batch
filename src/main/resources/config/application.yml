@@ -50,4 +50,4 @@ management:
 # ===================================================================
 application:
     batch:
-        inputPath: c:/demo/patient-batch-loader/data
+        inputPath: /Users/adammendak/Workspace/JavaProjects/Spring_batch/data

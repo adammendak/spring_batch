@@ -17,7 +17,7 @@ public class ApplicationProperties {
     }
 
     public static class Batch {
-        private String inputPath = "c:/demo/patient-batch-loader/data";
+        private String inputPath = "/Users/adammendak/Workspace/JavaProjects/Spring_batch/data";
 
         public String getInputPath() {
             return this.inputPath;
